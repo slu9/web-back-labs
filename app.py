@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, redirect
 import datetime
 app = Flask (__name__)
 
@@ -28,6 +28,10 @@ def author():
                 <a href="/web">web</a>
             </body>
         </html"""
+
+@app.route("/info")
+def info():
+    return redirect("/author")
 
 @app.route('/image')
 def image():
