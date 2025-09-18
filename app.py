@@ -33,6 +33,28 @@ def index():
 </body>
 </html>
 '''
+@app.route("/lab1")
+def lab1():
+    return '''
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная 1</title>
+</head>
+<body>
+    <h1>Лабораторная работа 1</h1>
+    <p>
+        Flask — фреймворк для создания веб-приложений на языке программирования Python, 
+        использующий набор инструментов Werkzeug, а также шаблонизатор Jinja2. 
+        Относится к категории так называемых микрофреймворков — минималистичных 
+        каркасов веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
+    </p>
+    <br>
+    <a href="/">На главную</a>
+</body>
+</html>
+'''
 
 @app.route("/lab1/web")
 def web():
@@ -130,3 +152,75 @@ def created():
     </body>
 </html>
 ''', 201
+
+@app.route("/lab1/400")
+def bad_request():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>400 — Bad Request</h1>
+        <p>Некорректный запрос.</p>
+    </body>
+</html>
+''', 400
+
+@app.route("/lab1/401")
+def unauthorized():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>401 — Unauthorized</h1>
+        <p>Требуется авторизация.</p>
+    </body>
+</html>
+''', 401
+
+@app.route("/lab1/402")
+def payment_required():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>402 — Payment Required</h1>
+        <p>Необходима оплата для доступа.</p>
+    </body>
+</html>
+''', 402
+
+@app.route("/lab1/403")
+def forbidden():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>403 — Forbidden</h1>
+        <p>Доступ запрещён.</p>
+    </body>
+</html>
+''', 403
+
+@app.route("/lab1/405")
+def method_not_allowed():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>405 — Method Not Allowed</h1>
+        <p>Метод не разрешён для этого ресурса.</p>
+    </body>
+</html>
+''', 405
+
+@app.route("/lab1/418")
+def teapot():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>418 — I'm a teapot</h1>
+        <p>Я чайник.</p>
+    </body>
+</html>
+''', 418
