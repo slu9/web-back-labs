@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, Response
 import datetime
 app = Flask (__name__)
 
@@ -132,20 +132,31 @@ def info():
 
 @app.route('/lab1/image')
 def image():
-    css_path = url_for("static", filename="lab1.css")
-    path = url_for("static", filename="hamster.jpg")
-    return '''
+    path_img = url_for("static", filename="hamster.jpg")
+    path_css = url_for("static", filename="lab1.css")
+    
+    html = f'''
 <!doctype html>
-<html>
-    <head>
-        <link rel="stylesheet" href="''' + css_path + '''">
-    </head>
-    <body>
-        <h1>Хомяк</h1>
-        <img src="''' + path + '''">
-    </body>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Хомяк</title>
+    <link rel="stylesheet" href="{path_css}">
+</head>
+<body>
+    <h1>Хомяк</h1>
+    <img src="{path_img}" alt="Хомяк">
+</body>
 </html>
 '''
+    headers = {
+        "Content-Language": "ru",
+        "X-Author": "Zyryanova_Sofya", 
+        "X-Lab": "Lab1"
+    }
+    
+    return Response(html, status=200, headers=headers)
+
 count = 0
 
 @app.route('/lab1/counter')
