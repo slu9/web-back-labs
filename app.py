@@ -4,7 +4,47 @@ app = Flask (__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "нет такой страницы", 404
+    return '''
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>404 — Страница не найдена</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+        }
+        h1 { 
+            font-size: 60px; 
+            color: #cc0000; 
+        }
+        p { 
+            font-size: 20px; 
+        }
+        a { 
+            color: #0066cc; 
+            text-decoration: none; 
+        }
+        a:hover { 
+            text-decoration: underline; 
+        }
+        img {
+            margin-top: 20px;
+            max-width: 250px;
+        }
+    </style>
+</head>
+<body>
+    <h1>404</h1>
+    <p>Такой страницы нет.<br>Вы, кажется, заблудились</p>
+    <a href="/">Вернуться на главную</a>
+    <br>
+    <img src="https://http.cat/404" alt="Картинка 404">
+</body>
+</html>
+''', 404
 
 @app.route("/")
 @app.route("/index")
@@ -224,3 +264,46 @@ def teapot():
     </body>
 </html>
 ''', 418
+
+@app.route("/lab1/error")
+def server_error():
+    x = 1 / 0
+    return str(x)
+
+@app.errorhandler(500)
+def internal_error(err):
+    return '''
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>500 — Внутренняя ошибка сервера</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 60px;
+            color: #cc0000;
+        }
+        p {
+            font-size: 20px;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>500</h1>
+    <p>Произошла внутренняя ошибка сервера</p>
+    <a href="/">Вернуться на главную</a>
+</body>
+</html>
+''', 500
