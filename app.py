@@ -2,46 +2,51 @@ from flask import Flask, url_for, request, redirect, Response
 import datetime
 app = Flask (__name__)
 
+visit_log = []
+
 @app.errorhandler(404)
 def not_found(err):
-    return '''
+    client_ip = request.remote_addr
+    access_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    requested_url = request.url
+    
+    visit_log.append({
+        "ip": client_ip,
+        "time": access_time,
+        "url": requested_url
+    })
+    
+    log_html = ""
+    for entry in reversed(visit_log[-10:]):  # последние 10 записей
+        log_html += f"<tr><td>{entry['ip']}</td><td>{entry['time']}</td><td>{entry['url']}</td></tr>"
+    
+    return f'''
 <!doctype html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>404 — Страница не найдена</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            padding: 50px; 
-        }
-        h1 { 
-            font-size: 60px; 
-            color: #cc0000; 
-        }
-        p { 
-            font-size: 20px; 
-        }
-        a { 
-            color: #0066cc; 
-            text-decoration: none; 
-        }
-        a:hover { 
-            text-decoration: underline; 
-        }
-        img {
-            margin-top: 20px;
-            max-width: 250px;
-        }
+        body {{ font-family: Arial, sans-serif; text-align: center; padding: 20px; }}
+        h1 {{ font-size: 50px; color: #cc0000; }}
+        table {{ margin: 20px auto; border-collapse: collapse; width: 80%; }}
+        th, td {{ border: 1px solid #999; padding: 8px; }}
+        th {{ background-color: #f2f2f2; }}
+        a {{ color: #0066cc; text-decoration: none; }}
+        a:hover {{ text-decoration: underline; }}
     </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>Такой страницы нет.<br>Вы, кажется, заблудились</p>
-    <a href="/">Вернуться на главную</a>
-    <br>
-    <img src="https://http.cat/404" alt="Картинка 404">
+    <h1>404 — Страница не найдена</h1>
+    <p>Ваш IP: {client_ip}</p>
+    <p>Дата и время доступа: {access_time}</p>
+    <p><a href="/">Вернуться на главную</a></p>
+    
+    <h2>Последние посещения</h2>
+    <table>
+        <tr><th>IP</th><th>Дата и время</th><th>Запрошенный адрес</th></tr>
+        {log_html}
+    </table>
 </body>
 </html>
 ''', 404
