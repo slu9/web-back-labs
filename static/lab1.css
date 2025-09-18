@@ -1,0 +1,12 @@
+body {
+    background-color: coral;
+    text-align: center;
+    h1 {
+        font-size: 15px;
+        border-bottom: 1px solid black;
+        text-align: center;
+        color: blueviolet;
+        background-color: pink;
+        margin: 8px;
+    }
+}
