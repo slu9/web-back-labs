@@ -7,6 +7,33 @@ def not_found(err):
     return "нет такой страницы", 404
 
 @app.route("/")
+@app.route("/index")
+def index():
+    return '''
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>НГТУ, ФБ, Лабораторные работы</title>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+        <hr>
+    </header>
+    <main>
+        <ol>
+            <li><a href="/lab1">Первая лабораторная</a></li>
+        </ol>
+    </main>
+    <footer>
+        &copy; Зырянова Софья Сергеевна, ФБИ-34, 3 курс, 2025
+        <hr>
+    </footer>
+</body>
+</html>
+'''
+
 @app.route("/lab1/web")
 def web():
     return """<!doctype html>
@@ -34,7 +61,8 @@ def author():
                 <p>Факультет: """ + faculty + """</p>
                 <a href="/web">web</a>
             </body>
-        </html"""
+        </html>
+        """
 
 @app.route("/lab1/info")
 def info():
