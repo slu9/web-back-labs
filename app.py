@@ -46,6 +46,9 @@ def image():
     return'''
 <!doctype html>
 <html>
+    <head>
+        <link rel="stylesheet" href="static/lab1.css">
+    </head>
     <body>
         <h1>Хомяк</h1>
         <img src="''' + path + '''">
