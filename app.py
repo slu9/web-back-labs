@@ -7,20 +7,20 @@ def not_found(err):
     return "нет такой страницы", 404
 
 @app.route("/")
-@app.route("/web")
+@app.route("/lab1/web")
 def web():
     return """<!doctype html>
         <html>
            <body>
                <h1>web-сервер на flask</h1>
-               <a href="/author">author</a>
+               <a href="/lab1/author">author</a>
            </body>
         </html>""", 200, {
             "X-Server": "sample",
             'Content-Type':'text/plan; charset=utf-8'
             }
 
-@app.route("/author")
+@app.route("/lab1/author")
 def author():
     name = "Зырянова Софья Сергеевна"
     group = "ФБИ-34"
@@ -36,18 +36,19 @@ def author():
             </body>
         </html"""
 
-@app.route("/info")
+@app.route("/lab1/info")
 def info():
-    return redirect("/author")
+    return redirect("/lab1/author")
 
-@app.route('/image')
+@app.route('/lab1/image')
 def image():
+    css_path = url_for("static", filename="lab1.css")
     path = url_for("static", filename="hamster.jpg")
-    return'''
+    return '''
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="static/lab1.css">
+        <link rel="stylesheet" href="''' + css_path + '''">
     </head>
     <body>
         <h1>Хомяк</h1>
@@ -57,7 +58,7 @@ def image():
 '''
 count = 0
 
-@app.route('/counter')
+@app.route('/lab1/counter')
 def counter():
     global count
     count += 1
@@ -72,11 +73,25 @@ def counter():
         <hr>
         Дата и время: ''' + str(time) + '''<br>
         Запрошенный адрес: ''' + url + '''<br>
+        <a href="/reset_counter">Сбросить счётчик</a>
+    </body>
+</html>
+'''
+@app.route("/reset_counter")
+def reset_counter():
+    global count
+    count = 0
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Счётчик сброшен!</h1>
+        <a href="/counter">Вернуться к счётчику</a>
     </body>
 </html>
 '''
 
-@app.route("/created")
+@app.route("/lab1/created")
 def created():
     return '''
 <!doctype html>
