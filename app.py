@@ -17,7 +17,7 @@ def not_found(err):
     })
     
     log_html = ""
-    for entry in reversed(visit_log[-10:]):  # последние 10 записей
+    for entry in reversed(visit_log[-10:]): 
         log_html += f"<tr><td>{entry['ip']}</td><td>{entry['time']}</td><td>{entry['url']}</td></tr>"
     
     return f'''
@@ -339,3 +339,11 @@ def internal_error(err):
 </body>
 </html>
 ''', 500
+
+@app.route('/lab2/a')
+def a():
+    return 'без слэша'
+
+@app.route('/lab2/a/')
+def a2():
+    return 'со слэшем'
