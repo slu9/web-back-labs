@@ -375,4 +375,6 @@ def add_flower(name):
 def example():
         name = 'Зырянова Софья'
         number = '2'
-        return render_template('example.html', name=name, number=number)
+        group = 'ФБИ-34'
+        course = '3'
+        return render_template('example.html', name=name, number=number, group=group, course=course)
