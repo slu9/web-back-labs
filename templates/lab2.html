@@ -9,9 +9,6 @@
     <div>Тема лабораторной - шаблоны. Список сделанных страниц:</div>
     <ol>
         <li><a href="{{ url_for('list_flowers') }}">/lab2/flowers</a> — список цветов</li>
-        <li><a href="{{ url_for('add_flower_missing') }}">/lab2/add_flower</a> — ошибка 400</li>
-        <li><a href="{{ url_for('flowers', flower_id=0) }}">/lab2/flowers/0</a> — информация о цветке</li>
-        <li><a href="{{ url_for('clear_flowers') }}">/lab2/flowers/clear</a> — очистить список</li>
         <li><a href="{{ url_for('example') }}">/lab2/example</a> — фрукты</li>
         <li><a href="{{ url_for('filters') }}">/lab2/filters</a> — фильтры</li>
         <li><a href="{{ url_for('calc_default') }}">/lab2/calc</a> — калькулятор</li>

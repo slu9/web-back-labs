@@ -349,39 +349,48 @@ def a():
 def a2():
     return 'со слэшем'
 
-flower_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
-@app.route('/lab2/flowers/<int:flower_id>')
+flower_list = [
+    {"name": "роза", "price": 300},
+    {"name": "тюльпан", "price": 310},
+    {"name": "незабудка", "price": 320},
+    {"name": "ромашка", "price": 330},
+]
+
+@app.route('/lab2/flowers/<int:flower_id>', methods=['GET'])
 def flowers(flower_id):
-    if flower_id < 0 or flower_id >= len(flower_list):
+    if not (0 <= flower_id < len(flower_list)):
         abort(404)
+    f = flower_list[flower_id]
+    return render_template('flower_info.html', flower=f, flower_id=flower_id)
 
-    name = flower_list[flower_id]
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Информация о цветке</h1>
-    <p><b>ID:</b> {flower_id}</p>
-    <p><b>Название:</b> {name}</p>
-    <p><a href="/lab2/flowers">Посмотреть все цветы</a></p>
-    </body>
-</html>
-'''
+@app.route('/lab2/flowers/', methods=['GET'])
+def list_flowers():
+    return render_template('flowers.html', flowers=flower_list)
 
-@app.route('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append(name)
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
-    </body>
-</html>
-'''
+@app.route('/lab2/add_flower', methods=['GET'])
+def add_flower():
+    name = (request.args.get("name") or "").strip()
+    price_raw = (request.args.get("price") or "").strip()
+
+    price_norm = price_raw.replace('+', '').replace(' ', '')
+    if not name or not price_norm.isdigit():
+        return ('<h1>400 Bad Request</h1>'
+                '<p>Нужно ввести название и целую неотрицательную цену</p>'), 400
+
+    flower_list.append({"name": name, "price": int(price_norm)})
+    return redirect(url_for('list_flowers'))
+
+@app.route('/lab2/del_flower/<int:flower_id>', methods=['GET'])
+def del_flower(flower_id):
+    if 0 <= flower_id < len(flower_list):
+        flower_list.pop(flower_id)
+        return redirect(url_for('list_flowers'))
+    abort(404)
+
+@app.route('/lab2/flowers/clear', methods=['GET'])
+def clear_flowers():
+    flower_list.clear()
+    return redirect(url_for('list_flowers'))
 
 @app.route('/lab2/example')
 def example():
@@ -406,47 +415,6 @@ def lab2():
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase=phrase)
-
-@app.route('/lab2/add_flower/')
-def add_flower_missing():
-    return '''
-<!doctype html>
-<html>
-    <body>
-        <h1>400 Bad request</h1>
-        <p>вы не задали имя цветка</p>
-    </body>
-</html>
-''', 400
-
-@app.route('/lab2/flowers/')
-def list_flowers():
-    return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Список цветов</h1>
-        <p>Всего цветов: {len(flower_list)}</p>
-        <ul>
-            {''.join(f'<li>{flower}</li>' for flower in flower_list) or '<li>Список пуст</li>'}
-        </ul>
-    </body>
-</html>
-'''
-
-@app.route('/lab2/flowers/clear')
-def clear_flowers():
-    flower_list.clear()
-    return '''
-<!doctype html>
-<html>
-    <body>
-        <h1>Список цветов очищен</h1>
-        <p>Все цветы удалены из списка</p>
-        <p><a href="/lab2/flowers">Перейти к списку всех цветов</a></p></p>
-    </body>
-</html>
-'''
 
 @app.route('/lab2/calc/<int:a>/<int:b>')
 def calc(a,b):
