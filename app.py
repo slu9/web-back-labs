@@ -472,3 +472,19 @@ def calc_default():
 @app.route('/lab2/calc/<int:a>')
 def calc_one_arg(a):
     return redirect(f'/lab2/calc/{a}/1')
+
+books = [
+    {"title": "1984", "author": "Джордж Оруэлл", "genre": "Антиутопия", "pages": 328},
+    {"title": "Маленький принц", "author": "Антуан де Сент-Экзюпери", "genre": "Сказка", "pages": 96},
+    {"title": "Улисс", "author": "Джеймс Джойс", "genre": "Модернизм", "pages": 730},
+    {"title": "Сто лет одиночества", "author": "Габриэль Гарсиа Маркес", "genre": "Магический реализм", "pages": 417},
+    {"title": "Фауст", "author": "Иоганн Вольфганг Гёте", "genre": "Драма", "pages": 448},
+    {"title": "Алхимик", "author": "Пауло Коэльо", "genre": "Притча", "pages": 208},
+    {"title": "Над пропастью во ржи", "author": "Джером Сэлинджер", "genre": "Роман", "pages": 277},
+    {"title": "Цветы для Элджернона", "author": "Дэниел Киз", "genre": "Фантастика", "pages": 320},
+    {"title": "Гарри Поттер и философский камень", "author": "Джоан Роулинг", "genre": "Фэнтези", "pages": 352},
+    {"title": "Имя розы", "author": "Умберто Эко", "genre": "Исторический детектив", "pages": 640}
+]
+@app.route('/lab2/books')
+def show_books():
+    return render_template('books.html', books=books)
