@@ -68,7 +68,8 @@ def index():
     </header>
     <main>
         <ol>
-            <li><a href="/lab1">Первая лабораторная</a></li>
+            <li><a href="/lab1">Первая лабораторная работа</a></li>
+            <li><a href="/lab2">Вторая лабораторная работа</a></li>
         </ol>
     </main>
     <footer>
@@ -488,3 +489,30 @@ books = [
 @app.route('/lab2/books')
 def show_books():
     return render_template('books.html', books=books)
+
+furniture = [
+    {"name": "Диван",         "desc": "Мягкий трёхместный диван для гостиной.",             "image": "sofa.webp"},
+    {"name": "Кресло",        "desc": "Уютное кресло с подлокотниками.",                   "image": "armchair.webp"},
+    {"name": "Обеденный стол","desc": "Деревянный стол на 6 человек.",                     "image": "dining_table.avif"},
+    {"name": "Стул",          "desc": "Классический стул с мягким сиденьем.",              "image": "chair.webp"},
+    {"name": "Кровать",       "desc": "Двуспальная кровать с изголовьем.",                 "image": "bed.webp"},
+    {"name": "Тумбочка",      "desc": "Прикроватная тумба с ящиками.",                     "image": "nightstand.jpg"},
+    {"name": "Шкаф",          "desc": "Двухстворчатый шкаф для одежды.",                   "image": "wardrobe.webp"},
+    {"name": "Комод",         "desc": "Низкий комод с четырьмя ящиками.",                  "image": "dresser.webp"},
+    {"name": "Письменный стол","desc": "Рабочий стол для учёбы или офиса.",                "image": "desk.webp"},
+    {"name": "Компьютерный стул","desc": "Эргономичное кресло на колёсиках.",             "image": "computer_chair.webp"},
+    {"name": "Кухонный гарнитур","desc": "Модули для кухни с полками.",                    "image": "kitchen.jpg"},
+    {"name": "Полка",         "desc": "Настенная полка для книг.",                          "image": "shelf.webp"},
+    {"name": "Туалетный столик","desc": "Столик с зеркалом и ящиками.",                    "image": "vanity.jpg"},
+    {"name": "Пуф",           "desc": "Мягкий пуфик без спинки.",                          "image": "pouf.jpg"},
+    {"name": "Журнальный столик","desc": "Низкий столик для гостиной.",                    "image": "coffee_table.jpg"},
+    {"name": "Этажерка",      "desc": "Открытая конструкция для хранения мелочей.",        "image": "etagere.webp"},
+    {"name": "Скамья",        "desc": "Узкое сиденье без спинки.",                         "image": "bench.jpg"},
+    {"name": "Барный стул",   "desc": "Высокий стул для барной стойки.",                   "image": "bar_stool.webp"},
+    {"name": "Кухонный остров","desc": "Центральный модуль кухни для готовки.",            "image": "kitchen_island.jpg"},
+    {"name": "Стеллаж",       "desc": "Открытый шкаф для книг и хранения.",                "image": "bookcase.jpg"},
+]
+
+@app.route("/lab2/furniture")
+def show_furniture():
+    return render_template("furniture.html", items=furniture)
