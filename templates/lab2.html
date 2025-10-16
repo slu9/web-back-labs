@@ -8,11 +8,11 @@
     <h1>Шаблоны</h1>
     <div>Тема лабораторной - шаблоны. Список сделанных страниц:</div>
     <ol>
-        <li><a href="{{ url_for('list_flowers') }}">/lab2/flowers</a> — список цветов</li>
-        <li><a href="{{ url_for('example') }}">/lab2/example</a> — фрукты</li>
-        <li><a href="{{ url_for('filters') }}">/lab2/filters</a> — фильтры</li>
-        <li><a href="{{ url_for('calc_default') }}">/lab2/calc</a> — калькулятор</li>
-        <li><a href="{{ url_for('show_books') }}">/lab2/books</a> — список книг</li>
-        <li><a href="{{ url_for('show_furniture') }}">/lab2/furniture</a> — мебель</li>
+        <li><a href="{{ url_for('lab2.list_flowers') }}">/lab2/flowers</a> — список цветов</li>
+        <li><a href="{{ url_for('lab2.example') }}">/lab2/example</a> — фрукты</li>
+        <li><a href="{{ url_for('lab2.filters') }}">/lab2/filters</a> — фильтры</li>
+        <li><a href="{{ url_for('lab2.calc_default') }}">/lab2/calc</a> — калькулятор</li>
+        <li><a href="{{ url_for('lab2.show_books') }}">/lab2/books</a> — список книг</li>
+        <li><a href="{{ url_for('lab2.show_furniture') }}">/lab2/furniture</a> — мебель</li>
     </ol>
 {% endblock %}

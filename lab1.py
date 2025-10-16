@@ -150,3 +150,79 @@ def created():
 </html>
 ''', 201
 
+@lab1.route("/lab1/400")
+def bad_request():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>400 — Bad Request</h1>
+        <p>Некорректный запрос.</p>
+    </body>
+</html>
+''', 400
+
+@lab1.route("/lab1/401")
+def unauthorized():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>401 — Unauthorized</h1>
+        <p>Требуется авторизация.</p>
+    </body>
+</html>
+''', 401
+
+@lab1.route("/lab1/402")
+def payment_required():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>402 — Payment Required</h1>
+        <p>Необходима оплата для доступа.</p>
+    </body>
+</html>
+''', 402
+
+@lab1.route("/lab1/403")
+def forbidden():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>403 — Forbidden</h1>
+        <p>Доступ запрещён.</p>
+    </body>
+</html>
+''', 403
+
+@lab1.route("/lab1/405")
+def method_not_allowed():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>405 — Method Not Allowed</h1>
+        <p>Метод не разрешён для этого ресурса.</p>
+    </body>
+</html>
+''', 405
+
+@lab1.route("/lab1/418")
+def teapot():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>418 — I'm a teapot</h1>
+        <p>Я чайник.</p>
+    </body>
+</html>
+''', 418
+
+@lab1.route("/lab1/error")
+def server_error():
+    x = 1 / 0
+    return str(x)
