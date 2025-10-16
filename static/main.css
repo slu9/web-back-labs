@@ -23,3 +23,12 @@ footer {
     left: 0;
     right: 0;
 }   
+
+.error {
+    color: #d93025;         
+    font-size: 0.9rem;       
+    font-weight: 500;       
+    margin-left: 8px;        
+    display: inline-block;   
+    vertical-align: middle;
+}
