@@ -22,11 +22,11 @@ def flowers(flower_id):
     if not (0 <= flower_id < len(flower_list)):
         abort(404)
     f = flower_list[flower_id]
-    return render_template('flower_info.html', flower=f, flower_id=flower_id)
+    return render_template('lab2/flower_info.html', flower=f, flower_id=flower_id)
 
 @lab2.route('/lab2/flowers/', methods=['GET'])
 def list_flowers():
-    return render_template('flowers.html', flowers=flower_list)
+    return render_template('lab2/flowers.html', flowers=flower_list)
 
 @lab2.route('/lab2/add_flower', methods=['GET'])
 def add_flower():
@@ -66,16 +66,16 @@ def example():
             {'name': 'мандарины', 'price': 95},
             {'name': 'манго', 'price': 321}
         ]
-        return render_template('example.html', name=name, number=number, group=group, course=course, fruits=fruits)
+        return render_template('lab2/example.html', name=name, number=number, group=group, course=course, fruits=fruits)
 
 @lab2.route('/lab2/')
 def lb2():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 @lab2.route('/lab2/filters')
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
-    return render_template('filter.html', phrase=phrase)
+    return render_template('lab2/filter.html', phrase=phrase)
 
 @lab2.route('/lab2/calc/<int:a>/<int:b>')
 def calc(a,b):
@@ -117,7 +117,7 @@ books = [
 ]
 @lab2.route('/lab2/books')
 def show_books():
-    return render_template('books.html', books=books)
+    return render_template('lab2/books.html', books=books)
 
 furniture = [
     {"name": "Диван",         "desc": "Мягкий трёхместный диван для гостиной.",             "image": "sofa.webp"},
@@ -144,4 +144,4 @@ furniture = [
 
 @lab2.route("/lab2/furniture")
 def show_furniture():
-    return render_template("furniture.html", items=furniture)
+    return render_template("lab2/furniture.html", items=furniture)

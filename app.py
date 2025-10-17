@@ -68,7 +68,7 @@ def index():
 <head>
     <meta charset="UTF-8">
     <title>НГТУ, ФБ, Лабораторные работы</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab1/main.css') }}">
 </head>
 <body>
     <header>

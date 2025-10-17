@@ -77,8 +77,8 @@ def info():
 
 @lab1.route('/lab1/image')
 def image():
-    path_img = url_for("static", filename="hamster.jpg")
-    path_css = url_for("static", filename="lab1.css")
+    path_img = url_for("static", filename="lab1/hamster.jpg")
+    path_css = url_for("static", filename="lab1/lab1.css")
     
     html = f'''
 <!doctype html>
