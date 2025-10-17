@@ -35,3 +35,28 @@ def form1():
         errors['age'] = 'Заполните поле!'
     sex = request.args.get('sex')
     return render_template('lab3/form1.html', user=user, age=age, sex=sex, errors=errors)
+
+@lab3.route('/lab3/order')
+def order():
+    return render_template('lab3/order.html')
+
+@lab3.route('/lab3/pay')
+def pay():
+    drink = request.args.get('drink')
+    milk = 'milk' in request.args
+    sugar = 'sugar' in request.args
+
+    prices = {'coffee': 100, 'black-tea': 80, 'green-tea': 90}
+    price = prices.get(drink, 0)
+    if milk:
+        price += 20
+    if sugar:
+        price += 10
+
+    return render_template('lab3/pay.html', price=price)
+
+@lab3.route('/lab3/success')
+def success():
+    price = request.args.get('price', 0)
+    return render_template('lab3/success.html', price=price)
+

@@ -32,3 +32,24 @@ footer {
     display: inline-block;   
     vertical-align: middle;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+button {
+    background-color: #5a67d8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #434190;
+}
