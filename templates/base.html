@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Зырянова Софья Сергеевна. {% block lab %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        body{
+            {% if request.cookies.get('color') %}
+            color: {{ request.cookies.get('color') }};
+            {% endif %}
+            
+            {% if request.cookies.get('bg') %}
+                background-color: {{ request.cookies.get('bg') }};
+            {% endif %}
+
+            {% if request.cookies.get('fs') %}
+                font-size: {{ request.cookies.get('fs') }}px;
+            {% endif %}
+
+            {% if request.cookies.get('weight') %}
+                font-weight: {{ request.cookies.get('weight') }};
+            {% endif %}
+        }
+    </style>
     <link rel="icon" type="image/png"
         href="{{ url_for('static', filename='favicon.png', v=2) }}">
 </head>

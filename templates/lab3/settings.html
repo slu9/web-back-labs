@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+  <h1>Cookies</h1>
+
+  <form method="post" action="{{ url_for('lab3.settings') }}">
+    <div>
+      <label for="color">Цвет текста:</label>
+      <input type="color" id="color" name="color" value="{{ color }}">
+    </div>
+
+    <div>
+      <label for="bg">Цвет фона:</label>
+      <input type="color" id="bg" name="bg" value="{{ bg }}">
+    </div>
+
+    <div>
+      <label for="fs">Размер шрифта (px):</label>
+      <input type="number" id="fs" name="fs" min="10" max="32" step="1" value="{{ fs }}">
+    </div>
+
+    <div>
+      <label for="weight">Начертание:</label>
+      <select id="weight" name="weight">
+        <option value="normal" {{ 'selected' if weight=='normal' else '' }}>обычный</option>
+        <option value="bold"   {{ 'selected' if weight=='bold'   else '' }}>жирный</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px">
+      <button type="submit">Сохранить</button>
+      <a href="{{ url_for('lab3.lab') }}" style="margin-left:10px">Назад</a>
+    </div>
+  </form>
+{% endblock %}

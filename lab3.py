@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, make_response, redirect
+from flask import Blueprint, render_template, request, make_response, redirect, url_for
 import datetime
 lab3 = Blueprint('lab3', __name__)
 
@@ -55,8 +55,24 @@ def pay():
 
     return render_template('lab3/pay.html', price=price)
 
-@lab3.route('/lab3/success')
-def success():
-    price = request.args.get('price', 0)
-    return render_template('lab3/success.html', price=price)
+@lab3.route('/lab3/settings', methods=['GET', 'POST'])
+def settings():
 
+    color  = request.values.get('color')
+    bg     = request.values.get('bg')
+    fs     = request.values.get('fs')
+    weight = request.values.get('weight')
+
+    if color or bg or fs or weight:
+        resp = make_response(redirect(url_for('lab3.settings')))
+        if color:  resp.set_cookie('color',  color)
+        if bg:     resp.set_cookie('bg',     bg)
+        if fs:     resp.set_cookie('fs',     fs)
+        if weight: resp.set_cookie('weight', weight)
+        return resp
+
+    return render_template('lab3/settings.html',
+                           color=request.cookies.get('color'),
+                           bg=request.cookies.get('bg'),
+                           fs=request.cookies.get('fs'),
+                           weight=request.cookies.get('weight'))
