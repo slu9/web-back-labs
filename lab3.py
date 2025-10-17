@@ -88,6 +88,14 @@ def settings():
                            fs=request.cookies.get('fs'),
                            weight=request.cookies.get('weight'))
 
+@lab3.route('/lab3/clear_cookies')
+def clear_cookies():
+    resp = make_response(redirect(url_for('lab3.settings')))
+    resp.delete_cookie('color')
+    resp.delete_cookie('bg')
+    resp.delete_cookie('fs')
+    resp.delete_cookie('weight')
+    return resp
 
 @lab3.route('/lab3/ticket')
 def ticket_form():
