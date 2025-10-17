@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<h1>Поиск товаров по цене</h1>
+
+<form method="get" action="{{ url_for('lab3.products') }}" style="margin-bottom: 12px;">
+  <label>Мин. цена:
+    <input type="number" name="min" value="{{ cur_min if cur_min is not none else '' }}"
+           placeholder="{{ min_all }}">
+  </label>
+  <label style="margin-left:10px;">Макс. цена:
+    <input type="number" name="max" value="{{ cur_max if cur_max is not none else '' }}"
+           placeholder="{{ max_all }}">
+  </label>
+
+  <button type="submit" style="margin-left:10px;">Искать</button>
+  <a href="{{ url_for('lab3.products', reset=1) }}" style="margin-left:6px;">Сброс</a>
+</form>
+
+{% if count == 0 %}
+  <p><em>Не найдено ни одного товара.</em></p>
+{% else %}
+  <p>Найдено: <strong>{{ count }}</strong></p>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Бренд</th>
+        <th>Цвет</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+        <tr>
+          <td>{{ p.name }}</td>
+          <td>{{ p.price }} ₽</td>
+          <td>{{ p.brand }}</td>
+          <td>{{ p.color }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+{% endblock %}

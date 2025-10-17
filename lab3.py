@@ -168,3 +168,98 @@ def ticket_result():
                            insurance=insurance, age=age, from_city=from_city,
                            to_city=to_city, date_trip=date_trip, price=price,
                            child_label=child_label)
+
+PRODUCTS = [
+    {"name": "iPhone 13",         "price": 56000, "brand": "Apple",  "color": "blue"},
+    {"name": "iPhone 14",         "price": 72000, "brand": "Apple",  "color": "midnight"},
+    {"name": "iPhone 15",         "price": 89000, "brand": "Apple",  "color": "pink"},
+    {"name": "Galaxy S21",        "price": 45000, "brand": "Samsung","color": "gray"},
+    {"name": "Galaxy S22",        "price": 62000, "brand": "Samsung","color": "black"},
+    {"name": "Galaxy S23",        "price": 78000, "brand": "Samsung","color": "green"},
+    {"name": "Pixel 6",           "price": 38000, "brand": "Google", "color": "black"},
+    {"name": "Pixel 7",           "price": 52000, "brand": "Google", "color": "snow"},
+    {"name": "Pixel 8",           "price": 67000, "brand": "Google", "color": "hazel"},
+    {"name": "Redmi Note 12",     "price": 19000, "brand": "Xiaomi", "color": "blue"},
+    {"name": "Redmi Note 13",     "price": 23000, "brand": "Xiaomi", "color": "black"},
+    {"name": "Mi 12",             "price": 41000, "brand": "Xiaomi", "color": "purple"},
+    {"name": "OnePlus 10T",       "price": 39000, "brand": "OnePlus","color": "jade"},
+    {"name": "OnePlus 11",        "price": 56000, "brand": "OnePlus","color": "black"},
+    {"name": "Honor 90",          "price": 32000, "brand": "Honor",  "color": "blue"},
+    {"name": "Honor Magic 6",     "price": 73000, "brand": "Honor",  "color": "black"},
+    {"name": "Huawei P50",        "price": 47000, "brand": "Huawei", "color": "gold"},
+    {"name": "Huawei P60",        "price": 64000, "brand": "Huawei", "color": "black"},
+    {"name": "Realme 11 Pro",     "price": 28000, "brand": "Realme", "color": "green"},
+    {"name": "Realme GT Neo 3",   "price": 34000, "brand": "Realme", "color": "blue"},
+    {"name": "Moto G84",          "price": 21000, "brand": "Motorola","color": "magenta"},
+    {"name": "Moto Edge 40",      "price": 36000, "brand": "Motorola","color": "black"},
+]
+
+@lab3.route('/lab3/products')
+def products():
+
+    min_all = min(p["price"] for p in PRODUCTS)
+    max_all = max(p["price"] for p in PRODUCTS)
+
+    g = request.args
+
+    if g.get('reset'):
+        resp = make_response(redirect(url_for('lab3.products')))
+        resp.delete_cookie('price_min')
+        resp.delete_cookie('price_max')
+        return resp
+
+    qmin = g.get('min')
+    qmax = g.get('max')
+    if (qmin is None and qmax is None):
+        qmin = request.cookies.get('price_min')
+        qmax = request.cookies.get('price_max')
+
+    def to_int(x):
+        try:
+            return int(x) if x not in (None, '',) else None
+        except ValueError:
+            return None
+
+    vmin = to_int(qmin)
+    vmax = to_int(qmax)
+
+    if vmin is not None and vmax is not None and vmin > vmax:
+        vmin, vmax = vmax, vmin
+
+    items = PRODUCTS
+    if vmin is not None:
+        items = [p for p in items if p["price"] >= vmin]
+    if vmax is not None:
+        items = [p for p in items if p["price"] <= vmax]
+
+    count = len(items)
+
+    if ('min' in g) or ('max' in g):
+        resp = make_response(render_template(
+            'lab3/products.html',
+            products=items,
+            count=count,
+            min_all=min_all,
+            max_all=max_all,
+            cur_min=vmin,
+            cur_max=vmax
+        ))
+        if vmin is None:
+            resp.delete_cookie('price_min')
+        else:
+            resp.set_cookie('price_min', str(vmin))
+        if vmax is None:
+            resp.delete_cookie('price_max')
+        else:
+            resp.set_cookie('price_max', str(vmax))
+        return resp
+
+    return render_template(
+        'lab3/products.html',
+        products=items,
+        count=count,
+        min_all=min_all,
+        max_all=max_all,
+        cur_min=vmin,
+        cur_max=vmax
+    )
