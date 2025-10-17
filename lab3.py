@@ -87,3 +87,76 @@ def settings():
                            bg=request.cookies.get('bg'),
                            fs=request.cookies.get('fs'),
                            weight=request.cookies.get('weight'))
+
+
+@lab3.route('/lab3/ticket')
+def ticket_form():
+    errors = {}
+    data = {
+        'fio': request.args.get('fio', ''),
+        'shelf': request.args.get('shelf', ''),
+        'linen': request.args.get('linen', ''),       
+        'baggage': request.args.get('baggage', ''),   
+        'age': request.args.get('age', ''),
+        'from_city': request.args.get('from_city', ''),
+        'to_city': request.args.get('to_city', ''),
+        'date': request.args.get('date', ''),
+        'insurance': request.args.get('insurance', ''),
+        'err': request.args.get('err', '')         
+    }
+    return render_template('lab3/ticket.html', data=data, errors=errors)
+
+
+@lab3.route('/lab3/ticket/result')
+def ticket_result():
+    g = request.args
+    errors = {}
+
+    fio        = (g.get('fio') or '').strip()
+    shelf      = g.get('shelf')
+    linen      = g.get('linen')      
+    baggage    = g.get('baggage')    
+    insurance  = g.get('insurance')  
+    from_city  = (g.get('from_city') or '').strip()
+    to_city    = (g.get('to_city') or '').strip()
+    date_trip  = g.get('date')
+    age_raw    = g.get('age')
+
+    if not fio:        errors['fio'] = 'Укажите ФИО'
+    if shelf not in ('lower','upper','upper_side','lower_side'):
+        errors['shelf'] = 'Выберите полку'
+    if linen not in ('yes','no'):         errors['linen'] = 'Укажите про бельё'
+    if baggage not in ('yes','no'):       errors['baggage'] = 'Укажите про багаж'
+    if insurance not in ('yes','no'):     errors['insurance'] = 'Укажите страховку'
+    if not from_city:  errors['from_city'] = 'Укажите пункт выезда'
+    if not to_city:    errors['to_city'] = 'Укажите пункт назначения'
+    if not date_trip:  errors['date'] = 'Укажите дату поездки'
+
+    try:
+        age = int(age_raw)
+        if not (1 <= age <= 120):
+            errors['age'] = 'Возраст от 1 до 120'
+    except (TypeError, ValueError):
+        errors['age'] = 'Введите возраст числом'
+
+    if errors:
+        return render_template('lab3/ticket.html',
+                               data=g, errors=errors), 400
+
+    price = 1000 if age >= 18 else 700
+    if shelf in ('lower', 'lower_side'):
+        price += 100
+    if linen == 'yes':
+        price += 75
+    if baggage == 'yes':
+        price += 250
+    if insurance == 'yes':
+        price += 150
+
+    child_label = 'Детский билет' if age < 18 else ''
+
+    return render_template('lab3/ticket_result.html',
+                           fio=fio, shelf=shelf, linen=linen, baggage=baggage,
+                           insurance=insurance, age=age, from_city=from_city,
+                           to_city=to_city, date_trip=date_trip, price=price,
+                           child_label=child_label)

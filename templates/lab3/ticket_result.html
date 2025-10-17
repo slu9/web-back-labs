@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<h1>Билет</h1>
+
+{% if child_label %}
+  <p><strong>{{ child_label }}</strong></p>
+{% endif %}
+
+<ul>
+  <li>Пассажир: {{ fio }}</li>
+  <li>Возраст: {{ age }}</li>
+  <li>Маршрут: {{ from_city }} → {{ to_city }}</li>
+  <li>Дата поездки: {{ date_trip }}</li>
+  <li>Полка:
+    {% if shelf == 'lower' %}нижняя
+    {% elif shelf == 'upper' %}верхняя
+    {% elif shelf == 'upper_side' %}верхняя боковая
+    {% elif shelf == 'lower_side' %}нижняя боковая
+    {% endif %}
+  </li>
+  <li>Бельё: {{ 'да' if linen=='yes' else 'нет' }}</li>
+  <li>Багаж: {{ 'да' if baggage=='yes' else 'нет' }}</li>
+  <li>Страховка: {{ 'да' if insurance=='yes' else 'нет' }}</li>
+</ul>
+
+<p><strong>Итого к оплате: {{ price }} ₽</strong></p>
+
+<a href="{{ url_for('lab3.ticket_form') if 'ticket_form' in self._TemplateReference__context.name else url_for('lab3.ticket_form') }}">Оформить новый билет</a>
+{% endblock %}
