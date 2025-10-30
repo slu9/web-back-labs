@@ -183,3 +183,64 @@ def fridge():
                     snowflakes = 1
 
     return render_template('lab4/fridge.html', message=message, snowflakes=snowflakes, temp_value=temp_value)
+
+@lab4.route('/lab4/grain', methods=['GET', 'POST'])
+def grain():
+    prices = {
+        'barley': 12000,   
+        'oats': 8500,      
+        'wheat': 9000,     
+        'rye': 15000       
+    }
+
+    message = None
+    error = None
+    discount_applied = False
+    discount_amount = 0
+    total = None
+    weight_value = ''
+    grain_value = 'barley' 
+
+    if request.method == 'POST':
+        grain_value = request.form.get('grain', 'barley')
+        weight_str = request.form.get('weight', '').strip()
+        weight_value = weight_str  
+
+        if weight_str == '':
+            error = 'Ошибка: не указан вес'
+        else:
+            try:
+                weight = float(weight_str)
+            except ValueError:
+                error = 'Ошибка: вес должен быть числом'
+            else:
+                if weight <= 0:
+                    error = 'Ошибка: вес должен быть больше 0'
+                elif weight > 100:
+                    error = 'Такого объёма сейчас нет в наличии'
+                else:
+                    price_per_ton = prices.get(grain_value, 0)
+                    total = weight * price_per_ton
+
+                    if weight > 10:
+                        discount_applied = True
+                        discount_amount = total * 0.10
+                        total = total * 0.90
+
+                    grain_names = {
+                        'barley': 'ячмень',
+                        'oats': 'овёс',
+                        'wheat': 'пшеница',
+                        'rye': 'рожь'
+                    }
+                    grain_human = grain_names.get(grain_value, 'зерно')
+
+                    message = (
+                        f'Заказ успешно сформирован. '
+                        f'Вы заказали: {grain_human}. '
+                        f'Вес: {weight} т. '
+                        f'Сумма к оплате: {int(total)} руб.'
+                    )
+
+    return render_template(
+        'lab4/grain.html', message=message, error=error, discount_applied=discount_applied, discount_amount=discount_amount, total=total, weight_value=weight_value, grain_value=grain_value)

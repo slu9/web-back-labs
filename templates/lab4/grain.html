@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block lab %}Заказ зерна{% endblock %}
+
+{% block main %}
+<h1>Заказ зерна</h1>
+
+<form method="post">
+    <label for="grain">Выберите вид зерна:</label>
+    <select name="grain" id="grain">
+        <option value="barley" {% if grain_value == 'barley' %}selected{% endif %}>Ячмень (12 000 руб/т)</option>
+        <option value="oats" {% if grain_value == 'oats' %}selected{% endif %}>Овёс (8 500 руб/т)</option>
+        <option value="wheat" {% if grain_value == 'wheat' %}selected{% endif %}>Пшеница (9 000 руб/т)</option>
+        <option value="rye" {% if grain_value == 'rye' %}selected{% endif %}>Рожь (15 000 руб/т)</option>
+    </select>
+
+    <div style="margin-top: 10px;">
+        <label for="weight">Вес (тонн):</label>
+        <input type="number" step="0.1" name="weight" id="weight" value="{{ weight_value }}">
+    </div>
+
+    <div style="margin-top: 10px;">
+        <button type="submit">Оформить заказ</button>
+    </div>
+</form>
+
+{% if error %}
+    <div style="margin-top: 15px; background-color: lightcoral; color: darkred; padding: 10px; border-radius: 6px;">
+        {{ error }}
+    </div>
+{% endif %}
+
+{% if message %}
+    <div style="margin-top: 15px; background-color: lightgreen; color: darkgreen; padding: 10px; border-radius: 6px;">
+        {{ message }}
+        {% if discount_applied %}
+            <p style="margin-top: 10px;">
+                Применена скидка за большой объём: 10% ({{ discount_amount|int }} руб).
+            </p>
+        {% endif %}
+    </div>
+{% endif %}
+
+<a href="/lab4" style="display:inline-block; margin-top: 15px;">Назад</a>
+{% endblock %}
