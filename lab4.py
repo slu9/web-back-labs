@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session, url_for
 lab4 = Blueprint('lab4', __name__)
 
 @lab4.route('/lab4')
@@ -149,6 +149,108 @@ def login():
 def logout():
     session.pop('login', None)
     return redirect('/lab4/login')
+
+@lab4.route('/lab4/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('lab4/register.html')
+
+    login_value = request.form.get('login', '').strip()
+    name_value = request.form.get('name', '').strip()
+    password = request.form.get('password', '').strip()
+    password2 = request.form.get('password2', '').strip()
+    gender = request.form.get('gender', '').strip()  
+
+    if login_value == '':
+        return render_template('lab4/register.html', error='Не введён логин', login_value=login_value, name_value=name_value)
+    if name_value == '':
+        return render_template('lab4/register.html', error='Не введено имя', login_value=login_value, name_value=name_value)
+    if password == '':
+        return render_template('lab4/register.html', error='Не введён пароль', login_value=login_value, name_value=name_value)
+    if password != password2:
+        return render_template('lab4/register.html', error='Пароль и подтверждение не совпадают', login_value=login_value, name_value=name_value)
+
+    for u in users:
+        if u['login'] == login_value:
+            return render_template('lab4/register.html', error='Такой логин уже существует', login_value=login_value, name_value=name_value)
+
+    users.append({
+        'login': login_value,
+        'password': password,
+        'name': name_value,
+        'gender': gender or 'u'
+    })
+
+    session['login'] = login_value
+
+    return redirect(url_for('lab4.users_list'))
+
+@lab4.route('/lab4/users')
+def users_list():
+    if 'login' not in session:
+        return redirect(url_for('lab4.login'))
+
+    safe_users = [
+        {'login': u['login'], 'name': u['name']}
+        for u in users
+    ]
+
+    current_login = session['login']
+    return render_template('lab4/users.html', users=safe_users, current_login=current_login)
+
+@lab4.route('/lab4/users/delete', methods=['POST'])
+def delete_self():
+    if 'login' not in session:
+        return redirect(url_for('lab4.login'))
+
+    current_login = session['login']
+    for i, u in enumerate(users):
+        if u['login'] == current_login:
+            users.pop(i)
+            break
+
+    session.clear()
+    return redirect(url_for('lab4.login'))
+
+@lab4.route('/lab4/users/edit', methods=['GET', 'POST'])
+def edit_self():
+    if 'login' not in session:
+        return redirect(url_for('lab4.login'))
+
+    current_login = session['login']
+    user = next((u for u in users if u['login'] == current_login), None)
+    if not user:
+        return redirect(url_for('lab4.login'))
+
+    if request.method == 'GET':
+        return render_template('lab4/edit-user.html', login_value=user['login'], name_value=user['name'])
+
+    new_login = request.form.get('login', '').strip()
+    new_name = request.form.get('name', '').strip()
+    new_password = request.form.get('password', '').strip()
+    new_password2 = request.form.get('password2', '').strip()
+
+    if new_login == '':
+        return render_template('lab4/edit_user.html', login_value=user['login'], name_value=new_name or user['name'], error='Логин не может быть пустым')
+
+    if new_name == '':
+        return render_template('lab4/edit_user.html', login_value=new_login, ame_value=user['name'], error='Имя не может быть пустым')
+
+    for u in users:
+        if u['login'] == new_login and u is not user:
+            return render_template('lab4/edit_user.html', login_value=user['login'], name_value=user['name'], error='Такой логин уже используется')
+
+    if new_password != '' or new_password2 != '':
+        if new_password != new_password2:
+            return render_template('lab4/edit_user.html', login_value=new_login, name_value=new_name, error='Пароль и подтверждение не совпадают')
+        else:
+            user['password'] = new_password  
+
+    user['login'] = new_login
+    user['name'] = new_name
+    session['login'] = new_login
+
+    return redirect(url_for('lab4.users_list'))
 
 @lab4.route('/lab4/fridge', methods=['GET', 'POST'])
 def fridge():
