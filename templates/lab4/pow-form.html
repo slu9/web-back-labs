@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block lab %}Возведение в степень{% endblock %}
+
+{% block main %}
+<h1>Возведение в степень</h1>
+<form action="/lab4/pow" method="post">
+    <input type="number" name="x1" placeholder="Основание">
+    <input type="number" name="x2" placeholder="Степень">
+    <button type="submit">Посчитать</button>
+</form>
+<a href="/lab4"><button>Назад</button></a>
+{% endblock %}
