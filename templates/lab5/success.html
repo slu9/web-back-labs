@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5. Регистрация{% endblock %}
+
+{% block main %}
+    <h1>Регистрация успешна</h1>
+
+    <p style="font-size: 18px; margin-top: 10px;">
+        Поздравляем, <strong>{{ login }}</strong>!<br>
+        Вы успешно зарегистрировались в системе.
+    </p>
+
+    <p style="margin-top: 15px;">
+        <a href="/lab5"
+           style="background-color: lightblue; 
+                  padding: 8px 16px; 
+                  border-radius: 6px; 
+                  text-decoration: none; 
+                  color: black; 
+                  font-weight: 600;">
+            Перейти к базе знаний
+        </a>
+    </p>
+{% endblock %}
