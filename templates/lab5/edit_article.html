@@ -22,6 +22,22 @@
         </div>
 
         <div style="margin-top: 10px;">
+            <label>
+                <input type="checkbox" name="is_favorite"
+                    {% if article['is_favorite'] %}checked{% endif %}>
+                Любимая статья
+            </label>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <label>
+                <input type="checkbox" name="is_public"
+                    {% if article['is_public'] %}checked{% endif %}>
+                Публичная статья
+            </label>
+        </div>
+
+        <div style="margin-top: 10px;">
             <button type="submit">Сохранить</button>
         </div>
     </form>

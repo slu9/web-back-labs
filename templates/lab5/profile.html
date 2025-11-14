@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+<h1>Профиль пользователя</h1>
+
+<p>Ваш логин: <strong>{{ login }}</strong></p>
+
+<form method="post">
+
+    <div style="margin-top: 10px;">
+        <label>
+            Новое имя:
+            <input type="text" name="real_name" value="{{ real_name }}" required>
+        </label>
+    </div>
+
+    <div style="margin-top: 15px;">
+        <label>
+            Новый пароль:
+            <input type="password" name="password">
+        </label>
+    </div>
+
+    <div style="margin-top: 10px;">
+        <label>
+            Подтверждение пароля:
+            <input type="password" name="confirm">
+        </label>
+    </div>
+
+    <p style="font-size: 13px; color: #666;">
+        Если оба поля пароля оставить пустыми — пароль не изменится.
+    </p>
+
+    <button type="submit" style="margin-top: 10px;">Сохранить</button>
+</form>
+
+{% if error %}
+    <p style="color: red; margin-top: 10px;">{{ error }}</p>
+{% endif %}
+
+<p style="margin-top: 20px;">
+    <a href="/lab5">Назад на главную</a>
+</p>
+
+{% endblock %}

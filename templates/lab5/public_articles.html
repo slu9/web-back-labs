@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+<h1>Публичные статьи</h1>
+
+<p><a href="/lab5">На главную</a></p>
+
+{% if articles %}
+    {% for art in articles %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <h2>
+                {% if art['is_favorite'] %} {% endif %}
+                {{ art['title'] }}
+            </h2>
+
+            <p><em>Автор: {{ art['real_name'] or art['login'] }}</em></p>
+
+            <blockquote>{{ art['article_text'] }}</blockquote>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Публичных статей пока нет.</p>
+{% endif %}
+
+{% endblock %}

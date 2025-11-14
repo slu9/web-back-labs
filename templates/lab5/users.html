@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+<h1>Все пользователи</h1>
+
+<p>
+    <a href="/lab5"
+       style="background-color: lightblue;
+              padding: 6px 12px;
+              border-radius: 6px;
+              text-decoration: none;">
+        На главную
+    </a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0"
+       style="border-collapse: collapse; margin-top: 15px;">
+    <tr style="background-color: #f5f5f5;">
+        <th>Логин</th>
+        <th>Имя</th>
+    </tr>
+
+    {% for u in users %}
+    <tr>
+        <td>{{ u["login"] }}</td>
+        <td>{{ u["real_name"] or "—" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
