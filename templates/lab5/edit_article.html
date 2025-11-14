@@ -3,7 +3,7 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-    <h1>Создание статьи</h1>
+    <h1>Редактирование статьи</h1>
 
     <form method="post">
         <div>
@@ -12,17 +12,17 @@
                 <input type="text"
                        maxlength="50"
                        name="title"
-                       value="{{ title or '' }}">
+                       value="{{ article['title'] }}">
             </label>
         </div>
 
         <div style="margin-top: 10px;">
             <textarea name="article_text"
-                      style="width: 100%; height: 150px;">{{ article_text or '' }}</textarea>
+                      style="width: 100%; height: 150px;">{{ article['article_text'] }}</textarea>
         </div>
 
         <div style="margin-top: 10px;">
-            <button type="submit">Готово</button>
+            <button type="submit">Сохранить</button>
         </div>
     </form>
 
@@ -33,12 +33,12 @@
     {% endif %}
 
     <p style="margin-top: 15px;">
-        <a href="/lab5"
+        <a href="/lab5/list"
            style="background-color: lightblue;
                   padding: 6px 12px;
                   text-decoration: none;
                   border-radius: 6px;">
-            На главную
+            Вернуться к списку статей
         </a>
     </p>
 {% endblock %}

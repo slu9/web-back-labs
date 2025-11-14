@@ -4,11 +4,64 @@
 
 {% block main %}
 
-    <h1>Статьи</h1>
+<h1>Статьи</h1>
 
-    {% for article in articles %}
-        <h2> {{ article['title'] }}</h2>
-        <blockquote>{{ article['article_text'] }}</blockquote>
-    {% endfor %}
+    <p style="margin-bottom: 15px;">
+        <a href="/lab5"
+        style="background-color: lightblue;
+                padding: 6px 12px;
+                text-decoration: none;
+                border-radius: 6px;
+                margin-right: 10px;">
+            На главную
+        </a>
+
+        <a href="/lab5/create"
+        style="background-color: lightgreen;
+                padding: 6px 12px;
+                text-decoration: none;
+                border-radius: 6px;">
+            Создать статью
+        </a>
+    </p>
+
+    {% if articles and articles|length > 0 %}
+        {% for article in articles %}
+            <div style="border: 1px solid #ccc;
+                        border-radius: 8px;
+                        padding: 10px 14px;
+                        margin-bottom: 12px;">
+                <h2>{{ article['title'] }}</h2>
+                <blockquote>{{ article['article_text'] }}</blockquote>
+
+                <p style="margin-top: 8px;">
+
+                    <a href="/lab5/edit/{{ article['id'] }}"
+                    style="margin-right: 10px;
+                            text-decoration: none;
+                            color: #0055aa;">
+                        Редактировать
+                    </a>
+
+                    <form action="{{ url_for('lab5.delete_article', article_id=article['id']) }}"
+                        method="post"
+                        style="display: inline;">
+                        <button type="submit"
+                                onclick="return confirm('Удалить эту статью?');"
+                                style="background-color: #ffdddd;
+                                    border: 1px solid #ffaaaa;
+                                    border-radius: 5px;
+                                    padding: 3px 8px;
+                                    cursor: pointer;">
+                            Удалить
+                        </button>
+                    </form>
+
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У вас пока нет ни одной статьи.</p>
+    {% endif %}
 
 {% endblock %}
