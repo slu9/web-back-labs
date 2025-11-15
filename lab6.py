@@ -6,21 +6,25 @@ offices = []
 for i in range(1, 11):
     offices.append({"number": i, "tenant": ""})
 
+
 @lab6.route('/lab6/')
 def main():
     return render_template('lab6/lab6.html')
 
-@lab6.route('/lab6/json-rpc-api/', methods = ['POST'])
+
+@lab6.route('/lab6/json-rpc-api/', methods=['POST'])
 def api():
-    data = request.json
-    id = data['id']
-    if data['method'] == 'info':
+    data = request.get_json()     
+    req_id = data['id']
+    method = data['method']
+
+    if method == 'info':
         return {
             'jsonrpc': '2.0',
             'result': offices,
-            'id': id
+            'id': req_id
         }
-    
+
     login = session.get('login')
     if not login:
         return {
@@ -29,10 +33,11 @@ def api():
                 'code': 1,
                 'message': 'Unauthorized'
             },
-            'id': id
+            'id': req_id
         }
 
-    if data['method'] == 'booking':
+
+    if method == 'booking':
         office_number = data['params']
         for office in offices:
             if office['number'] == office_number:
@@ -41,22 +46,52 @@ def api():
                         'jsonrpc': '2.0',
                         'error': {
                             'code': 2,
-                            'message': 'Already booked'
+                            'message': 'Офис уже занят'
                         },
-                        'id': id
+                        'id': req_id
                     }
+
                 office['tenant'] = login
                 return {
-                    'json': '2.0',
+                    'jsonrpc': '2.0', 
                     'result': 'success',
-                    'id': id
+                    'id': req_id
                 }
-            
+
+    if method == 'cancellation':
+        office_number = data['params']
+        for office in offices:
+            if office['number'] == office_number:
+                if office['tenant'] == '':
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 3,
+                            'message': 'Офис свободен'
+                        },
+                        'id': req_id
+                    }
+                if office['tenant'] != login:
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 4,
+                            'message': 'Вы не можете снять чужую аренду'
+                        },
+                        'id': req_id
+                    }
+                office['tenant'] = ''
+                return {
+                    'jsonrpc': '2.0',
+                    'result': 'success',
+                    'id': req_id
+                }
+
     return {
         'jsonrpc': '2.0',
         'error': {
             'code': -32601,
-            'message': 'Method not found'
+            'message': 'Странная ошибка'
         },
-        'id': id
+        'id': req_id
     }
