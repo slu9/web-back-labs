@@ -1,4 +1,81 @@
 {% extends "base.html" %}
+{% block lab %}Лабораторная работа 6{% endblock %}
+
+{% block style %}
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #0b63c5;
+    margin-bottom: 15px;
+}
+
+#office-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#office-list li {
+    background: #e7f2ff;                  
+    border: 1px solid #bcd9ff;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#office-list li span {
+    font-weight: 500;
+    color: #094b91;
+}
+
+.office-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+#office-list button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.book-btn {
+    background-color: #0b63c5;
+    color: white;
+}
+
+.book-btn:hover {
+    background-color: #084f9e;
+}
+
+.free-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+.free-btn:hover {
+    background-color: #c64541;
+}
+
+#total-price {
+    margin-top: 20px;
+    color: #094b91;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+</style>
+{% endblock %}
+
 {% block script %}
 <script>
 function getOfficeList() {
@@ -24,25 +101,34 @@ function getOfficeList() {
         for (let i = 0; i < office_list.length; i++) {
             const office = office_list[i];
             const li = document.createElement('li');
-            li.innerText = `${office.number}: ${office.tenant || 'свободен'} — ${office.price} ₽`;
+
+            const infoSpan = document.createElement('span');
+            infoSpan.innerText = `${office.number}: ${office.tenant || 'свободен'} — ${office.price} ₽`;
+            li.appendChild(infoSpan);
+
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'office-buttons';
 
             const bookingButton = document.createElement('button');
             bookingButton.innerText = 'зарезервировать';
+            bookingButton.classList.add('book-btn');
             bookingButton.onclick = function() {
                 booking(office.number);
             };
-            li.appendChild(bookingButton);
+            buttonsDiv.appendChild(bookingButton);
 
             const freeButton = document.createElement('button');
             freeButton.innerText = 'освободить';
-            freeButton.style.marginLeft = '10px';
+            freeButton.classList.add('free-btn');
             freeButton.onclick = function() {
                 cancellation(office.number);
             };
-            li.appendChild(freeButton);
+            buttonsDiv.appendChild(freeButton);
+
+            li.appendChild(buttonsDiv);
 
             ul.appendChild(li);
-        }
+            }
 
         let total = 0;
         for (let i = 0; i < office_list.length; i++) {
