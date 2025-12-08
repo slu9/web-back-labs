@@ -1,5 +1,9 @@
 function showModal() {
     document.querySelector('div.modal').style.display = 'block';
+    const errorSpan = document.getElementById('description-error');
+    if (errorSpan) {
+        errorSpan.innerText = '';
+    }
 }
 
 function hideModal() {
@@ -36,9 +40,16 @@ function sendFilm() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(film)
     })
-    .then(function() {
-        fillFilmList();
-        hideModal();
+    .then(function(resp) {
+        if(resp.ok) {
+            fillFilmList();
+            hideModal();
+        }
+        return resp.json();
+    })
+    .then(function(errors) {
+        if(errors.description)
+            document.getElementById('description-error').innerText = errors.description;
     });
 }
 
