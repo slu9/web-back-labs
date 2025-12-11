@@ -53,6 +53,14 @@ def get_film(id):
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
     new_film = request.get_json()
+
+    title_ru = (new_film.get('title_ru') or '').strip()
+    title = (new_film.get('title') or '').strip()
+    if title_ru and not title:
+        title = title_ru
+    new_film['title_ru'] = title_ru
+    new_film['title'] = title
+
     if not new_film.get('description'):
         return jsonify({'description': 'Заполните описание'}), 400
 
@@ -66,6 +74,15 @@ def update_film(id):
         return jsonify({"error": "Фильм с таким id не найден"}), 404
 
     film = request.get_json()
+
+    title_ru = (film.get('title_ru') or '').strip()
+    title = (film.get('title') or '').strip()
+
+    if title_ru and not title:
+        title = title_ru
+
+    film['title_ru'] = title_ru
+    film['title'] = title
 
     if not film.get('description'):
         return jsonify({'description': 'Заполните описание'}), 400

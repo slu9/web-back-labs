@@ -95,8 +95,13 @@ function fillFilmList() {
                 let tdYear = document.createElement('td');
                 let tdActions = document.createElement('td');
 
-                tdTitle.innerText = films[i].title == films[i].title_ru ? '' : films[i].title;
-                tdTitleRus.innerText = films[i].title_ru;
+                tdTitle.innerText = films[i].title_ru;
+                let original = films[i].title || "";
+                if (original && original !== films[i].title_ru) {
+                    tdTitleRus.innerHTML = `<i>(${original})</i>`;
+                } else {
+                    tdTitleRus.innerHTML = "";
+                }
                 tdYear.innerText = films[i].year;
 
                 let editButton = document.createElement('button');

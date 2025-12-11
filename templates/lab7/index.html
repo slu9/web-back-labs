@@ -7,18 +7,52 @@
 <style>
 .modal {
     display: none;
-    z-index: 100;
-    box-shadow: 3px 3px 5px black;
-    background: white;
-    width: 400px;
+    position: fixed;
+    top: 20%;
     left: 50%;
-    top: 220px;
-    margin-left: -200px;
-    position: absolute;
+    transform: translateX(-50%);
+    width: 420px;
+    background: white;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
 }
 .error-message {
     color: red;
+}
+table {
+    border-collapse: collapse;
+    width: 700px;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #555;
+    padding: 8px 10px;
+}
+
+table th {
+    background: #e6e6e6;
+}
+button {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: none;
+    background: #0077ff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005fcc;
+}
+
+button.delete {
+    background: #cc2f2f;
+}
+button.delete:hover {
+    background: #a32020;
 }
 </style>
 {% endblock %}
