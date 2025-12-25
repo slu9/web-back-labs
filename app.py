@@ -18,7 +18,7 @@ from lab8 import lab8
 
 app = Flask (__name__)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret-secret-key')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 
 login_manager = LoginManager()

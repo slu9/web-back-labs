@@ -1,7 +1,8 @@
-{% extends "base.html" %}
-
-{% block lab %}
-Лабораторная работа 8
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+{% block favicon %}
+<link rel="icon" href="{{ url_for('static', filename='lab8/favicon.ico') }}">
 {% endblock %}
 
 {% block main %}
@@ -13,7 +14,8 @@
     </div>
 {% endif %}
 
-<form action="/lab8/login" method="post">
+<form action="/lab8/login" method="post" class="form-card">
+
     <div>
         <label>
             Логин:
@@ -28,6 +30,13 @@
         </label>
     </div>
 
-    <button type="submit">Вход</button>
+    <div>
+        <label>
+            <input type="checkbox" name="remember" value="1">
+            Запомнить меня
+        </label>
+    </div>
+
+    <button type="submit">Войти</button>
 </form>
 {% endblock %}

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block main %}
-<h1>Создать статью</h1>
+<h1>Редактировать статью</h1>
 
 {% if error %}
 <div class="error">{{ error }}</div>
@@ -15,14 +15,16 @@
 <form method="post" class="form-card">
     <div>
         <label>Заголовок</label>
-        <input type="text" name="title">
+        <input type="text" name="title" value="{{ article.title }}">
     </div>
 
     <div>
         <label>Текст статьи</label>
-        <textarea name="article_text" rows="10"></textarea>
+        <textarea name="article_text" rows="10">{{ article.article_text }}</textarea>
     </div>
 
     <button type="submit">Сохранить</button>
 </form>
+
+<p><a href="/lab8/articles/">Назад к списку</a></p>
 {% endblock %}

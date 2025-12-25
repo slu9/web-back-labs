@@ -1,12 +1,45 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <title>Список статей</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
-</head>
-<body class="page">
-    <h1>Список статей</h1>
-    <p><a href="/lab8/">На главную lab8</a></p>
-</body>
-</html>
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+{% block favicon %}
+<link rel="icon" href="{{ url_for('static', filename='lab8/favicon.ico') }}">
+{% endblock %}
+
+{% block main %}
+<h1>Мои статьи</h1>
+
+<div class="articles-actions">
+    <a href="/lab8/" class="back-btn">← Вернуться к базе</a>
+    <a href="/lab8/create" class="create-btn">＋ Создать статью</a>
+</div>
+
+{% if articles|length == 0 %}
+    <p>Статей пока нет.</p>
+{% else %}
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Заголовок</th>
+        <th>Действия</th>
+    </tr>
+
+    {% for a in articles %}
+    <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.title }}</td>
+        <td>
+            <a href="/lab8/edit/{{ a.id }}" class="action-btn">Редактировать</a>
+
+            <form action="/lab8/delete/{{ a.id }}" method="post" style="display:inline;">
+                <button type="submit" class="action-btn delete"
+                        onclick="return confirm('Удалить статью?');">
+                    Удалить
+                </button>
+            </form>
+        </td>
+    </tr>
+    
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}
