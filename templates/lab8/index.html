@@ -7,18 +7,20 @@
 </head>
 <body>
 
-<header class="header">
-    <div class="header-title">База знаний</div>
+<div class="top-bar">
+    WEB-программирование, часть 2. Лабораторная работа 8
+</div>
 
-    <div class="header-menu">
-        <a href="/lab8/articles" class="btn">Список статей</a>
-        <a href="/lab8/create" class="btn">Создать статью</a>
-        <a href="/lab8/login" class="btn">Войти</a>
-        <a href="/lab8/register" class="btn">Регистрация</a>
-    </div>
+<h1>База знаний</h1>
 
-    <div class="header-user">Anonymous</div>
-</header>
+<div class="menu">
+    <a href="/lab8/articles">Список статей</a>
+    <a href="/lab8/create">Создать статью</a>
+    <a href="/lab8/login">Войти</a>
+    <a href="/lab8/register">Регистрация</a>
+
+    <div class="username">{{ username }}</div>
+</div>
 
 </body>
 </html>
