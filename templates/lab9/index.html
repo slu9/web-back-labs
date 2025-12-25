@@ -1,12 +1,101 @@
-{% extends "base.html" %}
-
-{% block lab %}
-Лабораторная работа 9
-{% endblock %}
-
-{% block script %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab9/lab9.css') }}">
 {% endblock %}
 
 {% block main %}
-<h1>Поздравления</h1>
+
+<div class="top-actions">
+  <a href="/" class="back-btn">← Главное меню</a>
+</div>
+
+<h1>Подарки</h1>
+
+<div class="info">
+  <div>Открыто вами: <b id="openedCount">{{ opened_count }}</b> / 3</div>
+  <div>Неоткрытых коробок: <b id="remaining">{{ remaining }}</b></div>
+</div>
+
+<div class="field">
+  {% for i in range(10) %}
+    {% set p = positions[i] %}
+    <img
+      class="box {% if i in opened %}empty{% endif %}"
+      data-id="{{ i }}"
+      src="{% if i in opened %}
+            {{ url_for('static', filename='lab9/empty.png') }}
+           {% else %}
+            {{ url_for('static', filename='lab9/' ~ boxes[i]) }}
+           {% endif %}"
+      style="left: {{ p.left }}px; top: {{ p.top }}px; width: {{ p.size }}px;"
+      alt="box"
+    >
+  {% endfor %}
+</div>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <h2>Поздравление 🎄</h2>
+    <p id="cardText"></p>
+    <img id="cardGift" src="" alt="gift">
+    <button id="closeBtn" type="button">Закрыть</button>
+  </div>
+</div>
+
+<script>
+const openedSet = new Set({{ opened|tojson }});
+const EMPTY_URL = "{{ url_for('static', filename='lab9/empty.png') }}";
+
+const modal = document.getElementById('modal');
+const cardText = document.getElementById('cardText');
+const cardGift = document.getElementById('cardGift');
+const openedCountEl = document.getElementById('openedCount');
+const remainingEl = document.getElementById('remaining');
+
+document.getElementById('closeBtn').addEventListener('click', () => {
+  modal.classList.remove('show');
+});
+
+document.querySelectorAll('.box').forEach(box => {
+  box.addEventListener('click', async () => {
+    const id = parseInt(box.dataset.id);
+
+    if (openedSet.has(id)) return;
+
+    const res = await fetch('/lab9/open', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ box_id: id })
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      alert(data.error);
+      if (data.opened_count !== undefined) openedCountEl.textContent = data.opened_count;
+      if (data.remaining !== undefined) remainingEl.textContent = data.remaining;
+      return;
+    }
+
+    openedCountEl.textContent = data.opened_count;
+    remainingEl.textContent = data.remaining;
+
+    if (data.status === 'empty') {
+      openedSet.add(id);
+      box.classList.add('empty');
+      box.src = EMPTY_URL;
+      return;
+    }
+
+    openedSet.add(id);
+
+    cardText.textContent = data.message;
+    cardGift.src = data.gift_url;
+    modal.classList.add('show');
+
+    box.classList.add('empty');
+    box.src = EMPTY_URL;
+  });
+});
+</script>
+
 {% endblock %}
