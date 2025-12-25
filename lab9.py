@@ -1,9 +1,11 @@
 import random
 from flask import Blueprint, render_template, request, jsonify, session, url_for
+from flask_login import current_user, login_required
 
 lab9 = Blueprint('lab9', __name__)
 OPENED_BOXES = set()
 BOX_POSITIONS = {}
+AUTH_ONLY_BOXES = {7, 8, 9}
 BOXES = [f"gift{i}.png" for i in range(1, 11)]
 
 GIFTS = [
@@ -18,12 +20,6 @@ GIFTS = [
     {"msg": "Новых возможностей!", "gift": "book.png"},
     {"msg": "Пусть всё плохое останется в прошлом!", "gift": "star.png"},
 ]
-
-def rects_intersect(a, b):
-    return not (
-        a["x2"] <= b["x1"] or a["x1"] >= b["x2"] or
-        a["y2"] <= b["y1"] or a["y1"] >= b["y2"]
-    )
 
 def rects_intersect(a, b, pad=10):
     return not (
@@ -101,6 +97,14 @@ def open_box():
             "opened_count": opened_count,
             "remaining": 10 - len(OPENED_BOXES)
         }), 403
+    
+    if box_id in AUTH_ONLY_BOXES and not current_user.is_authenticated:
+        return jsonify({
+            "ok": False,
+            "error": "Этот подарок доступен только авторизованным пользователям",
+            "opened_count": session.get('opened_count', 0),
+            "remaining": 10 - len(OPENED_BOXES)
+        }), 403
 
     OPENED_BOXES.add(box_id)
     session['opened_count'] = opened_count + 1
@@ -116,3 +120,10 @@ def open_box():
         "opened_count": session['opened_count'],
         "remaining": 10 - len(OPENED_BOXES)
     })
+
+@lab9.route('/lab9/reset', methods=['POST'])
+@login_required
+def reset_boxes():
+    OPENED_BOXES.clear()          
+    session['opened_count'] = 0   
+    return jsonify({"ok": True})
