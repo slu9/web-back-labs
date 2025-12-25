@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db import db
 from db.models import users, articles
 from flask_login import login_user, login_required, current_user, logout_user
+from sqlalchemy import or_
 
 lab8 = Blueprint('lab8', __name__)
 from flask_login import current_user
@@ -115,6 +116,15 @@ def create():
         likes=0
     )
 
+    is_public = request.form.get('is_public') == '1'
+
+    new_article = articles(
+        login_id=current_user.id,
+        title=title,
+        article_text=text,
+        is_public=is_public
+    )
+
     db.session.add(new_article)
     db.session.commit()
 
@@ -157,3 +167,33 @@ def delete_article(article_id):
     db.session.commit()
 
     return redirect('/lab8/articles/')
+
+@lab8.route('/lab8/public/')
+def public_articles():
+    pub = articles.query.filter_by(is_public=True).order_by(articles.id.desc()).all()
+    return render_template('lab8/public.html', articles=pub)
+
+@lab8.route('/lab8/search')
+def search():
+    q = (request.args.get('q') or '').strip()
+
+    results = []
+    if q:
+        pattern = f"%{q}%"
+
+        cond_public = articles.is_public.is_(True)
+
+        if current_user.is_authenticated:
+            cond_owner = (articles.login_id == current_user.id)
+            base_cond = or_(cond_public, cond_owner)
+        else:
+            base_cond = cond_public
+
+        results = (articles.query
+                   .filter(base_cond)
+                   .filter(or_(articles.title.ilike(pattern),
+                               articles.article_text.ilike(pattern)))
+                   .order_by(articles.id.desc())
+                   .all())
+
+    return render_template('lab8/search.html', q=q, articles=results)

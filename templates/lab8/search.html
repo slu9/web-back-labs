@@ -1,0 +1,38 @@
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+{% block favicon %}
+<link rel="icon" href="{{ url_for('static', filename='lab8/favicon.ico') }}">
+{% endblock %}
+
+{% block main %}
+<h1>Поиск по статьям</h1>
+
+<form method="get" action="/lab8/search" class="form-card">
+    <div>
+        <input type="text" name="q" placeholder="Введите строку для поиска" value="{{ q }}">
+    </div>
+    <button type="submit">Найти</button>
+</form>
+
+{% if q and articles|length == 0 %}
+<p>Ничего не найдено по запросу «{{ q }}».</p>
+{% endif %}
+
+{% if articles|length > 0 %}
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Заголовок</th>
+        <th>Публичная</th>
+    </tr>
+    {% for a in articles %}
+    <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.title }}</td>
+        <td>{{ 'да' if a.is_public else 'нет' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}
